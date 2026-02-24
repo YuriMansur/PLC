@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbolconfiguration xmlns="http://www.3s-software.com/schemas/Symbolconfiguration.xsd">
+  <Header>
+    <Version>3.5.14.0</Version>
+    <SymbolConfigObject version="4.0.0.0" runtimeid="3.5.15.40" libversion="3.5.17.0" compiler="3.5.17.30" lmm="3.5.17.0" profile="CODESYS V3.5 SP17 Patch 3+" settings="SupportOPCUA, LayoutCalculator=OptimizedClientSideLayoutCalculator" />
+    <ProjectInfo name="work_project_TST_all_v3_TEC_tst_1_1_with_two_2016N" devicename="Device" appname="Application" />
+  </Header>
+  <TypeList>
+    <TypeSimple name="T_BOOL" size="1" swapsize="0" typeclass="Bool" iecname="BOOL" />
+    <TypeSimple name="T_DINT" size="4" swapsize="4" typeclass="DInt" iecname="DINT" />
+    <TypeSimple name="T_INT" size="2" swapsize="2" typeclass="Int" iecname="INT" />
+    <TypeSimple name="T_LREAL" size="8" swapsize="8" typeclass="LReal" iecname="LREAL" />
+    <TypeSimple name="T_REAL" size="4" swapsize="4" typeclass="Real" iecname="REAL" />
+    <TypeSimple name="T_SINT" size="1" swapsize="1" typeclass="SInt" iecname="SINT" />
+    <TypeSimple name="T_UDINT" size="4" swapsize="4" typeclass="UDInt" iecname="UDINT" />
+    <TypeSimple name="T_WORD" size="2" swapsize="2" typeclass="Word" iecname="WORD" />
+  </TypeList>
+  <NodeList>
+    <Node name="Application">
+      <Node name="GVL">
+        <Node name="Alarm_all" type="T_BOOL" access="ReadWrite" />
+        <Node name="alarm_all_TO" type="T_WORD" access="ReadWrite" />
+        <Node name="alarm_encoder" type="T_BOOL" access="ReadWrite" />
+        <Node name="Alarm_ethercat" type="T_BOOL" access="ReadWrite" />
+        <Node name="Alarm_servo" type="T_BOOL" access="ReadWrite" />
+        <Node name="calibr_pos_mm" type="T_REAL" access="ReadWrite" />
+        <Node name="F" type="T_REAL" access="ReadWrite" />
+        <Node name="F_calibr_A" type="T_REAL" access="ReadWrite" />
+        <Node name="F_calibr_B" type="T_REAL" access="ReadWrite" />
+        <Node name="F_done" type="T_WORD" access="ReadWrite" />
+        <Node name="F_pa" type="T_REAL" access="ReadWrite" />
+        <Node name="F_pa_done" type="T_BOOL" access="ReadWrite" />
+        <Node name="F_Sensor" type="T_REAL" access="ReadWrite" />
+        <Node name="F_Sensor_RAW" type="T_INT" access="ReadWrite" />
+        <Node name="F_Sensor_small" type="T_REAL" access="ReadWrite" />
+        <Node name="F_Sensor_small_RAW" type="T_INT" access="ReadWrite" />
+        <Node name="F_set" type="T_REAL" access="ReadWrite" />
+        <Node name="F_set_done" type="T_BOOL" access="ReadWrite" />
+        <Node name="F_small" type="T_REAL" access="ReadWrite" />
+        <Node name="F_stab" type="T_REAL" access="ReadWrite" />
+        <Node name="F_stab_done" type="T_BOOL" access="ReadWrite" />
+        <Node name="Hvac_error" type="T_DINT" access="ReadWrite" />
+        <Node name="In_F" type="T_WORD" access="ReadWrite" />
+        <Node name="in_JOG_Velocity" type="T_REAL" access="ReadWrite" />
+        <Node name="In_pos_shift" type="T_REAL" access="ReadWrite" />
+        <Node name="In_set_zero_H" type="T_BOOL" access="ReadWrite" />
+        <Node name="In_set_zero_H_small" type="T_BOOL" access="ReadWrite" />
+        <Node name="In_set_zero_pos" type="T_BOOL" access="ReadWrite" />
+        <Node name="In_Speed_H" type="T_REAL" access="ReadWrite" />
+        <Node name="JOG_Acceleration" type="T_LREAL" access="ReadWrite" />
+        <Node name="JOG_Backward" type="T_BOOL" access="ReadWrite" />
+        <Node name="JOG_Deceleration" type="T_LREAL" access="ReadWrite" />
+        <Node name="JOG_Forward" type="T_BOOL" access="ReadWrite" />
+        <Node name="JOG_str" type="T_BOOL" access="ReadWrite" />
+        <Node name="JOG_Velocity" type="T_LREAL" access="ReadWrite" />
+        <Node name="ktsl_senser_pos" type="T_UDINT" access="ReadWrite" />
+        <Node name="mode_of_opration" type="T_SINT" access="ReadWrite" />
+        <Node name="PDI_CON_220V_ST" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_CON_24V_ST" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_F1_LS_BP" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_F1_LS_DN" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_F1_LS_UP" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_F1_PWR_ST" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_LS_DOOR2_right" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_LS_DOOR_left" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_SAFE_A_ST" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_SAFE_B_ST" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_UPS_24V_ST" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_UPS_ACCU_FL_bad" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDI_UPS_ACCU_FL_wrk" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDQ_COL_24V" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDQ_COL_GN" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDQ_COL_RD" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDQ_COL_SN" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDQ_F1_LS_BYP" type="T_BOOL" access="ReadWrite" />
+        <Node name="PDQ_F1_PWR_OO" type="T_BOOL" access="ReadWrite" />
+        <Node name="position_mm" type="T_REAL" access="ReadWrite" />
+        <Node name="power" type="T_BOOL" access="ReadWrite" />
+        <Node name="real_position" type="T_UDINT" access="ReadWrite" />
+        <Node name="Reset_all" type="T_BOOL" access="ReadWrite" />
+        <Node name="start" type="T_BOOL" access="ReadWrite" />
+        <Node name="static_F_pa_str" type="T_BOOL" access="ReadWrite" />
+        <Node name="static_F_set_str" type="T_BOOL" access="ReadWrite" />
+        <Node name="static_F_stab_str" type="T_BOOL" access="ReadWrite" />
+        <Node name="static_start" type="T_BOOL" access="ReadWrite" />
+        <Node name="STOP" type="T_BOOL" access="ReadWrite" />
+        <Node name="Zero_pos" type="T_REAL" access="ReadWrite" />
+      </Node>
+    </Node>
+  </NodeList>
+</Symbolconfiguration>
