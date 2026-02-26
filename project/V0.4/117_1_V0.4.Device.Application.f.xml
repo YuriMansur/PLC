@@ -7,29 +7,13 @@
   </Header>
   <TypeList>
     <TypeSimple name="T_BOOL" size="1" swapsize="0" typeclass="Bool" iecname="BOOL" />
-    <TypeSimple name="T_BYTE" size="1" swapsize="1" typeclass="Byte" iecname="BYTE" />
-    <TypeSimple name="T_DINT" size="4" swapsize="4" typeclass="DInt" iecname="DINT" />
-    <TypeSimple name="T_DWORD" size="4" swapsize="4" typeclass="DWord" iecname="DWORD" />
     <TypeSimple name="T_INT" size="2" swapsize="2" typeclass="Int" iecname="INT" />
-    <TypeSimple name="T_STRING" size="81" swapsize="0" typeclass="String" iecname="STRING" />
-    <TypeSimple name="T_UDINT" size="4" swapsize="4" typeclass="UDInt" iecname="UDINT" />
-    <TypeSimple name="T_WORD" size="2" swapsize="2" typeclass="Word" iecname="WORD" />
     <TypeUserDef name="T_AUTO_MOVE_STEPS" size="2" nativesize="2" swapsize="2" typeclass="Enum" iecname="AUTO_MOVE_STEPS" basetype="T_INT">
       <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="AWAIT" enumvalue="0" />
       <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="INJECTION" enumvalue="1" />
       <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="RETENTION" enumvalue="2" />
       <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="FAILING" enumvalue="3" />
     </TypeUserDef>
-    <TypeSimple name="T_CmpIecTask_RTS_IEC_RESULT" size="4" swapsize="4" typeclass="UDInt" iecname="CmpIecTask.RTS_IEC_RESULT" aliasedtype="T_UDINT" aliasediecname="UDINT" />
-    <TypeUserDef name="T_Jitter_Distribution" size="6" nativesize="6" typeclass="Userdef" pouclass="STRUCTURE" iecname="Jitter_Distribution">
-      <UserDefElement iecname="wRangeMax" type="T_WORD" byteoffset="0" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="wCountJitterNeg" type="T_WORD" byteoffset="2" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="wCountJitterPos" type="T_WORD" byteoffset="4" vartype="VAR" access="ReadWrite" />
-    </TypeUserDef>
-    <TypeSimple name="T_POINTER_TO_BYTE" size="4" swapsize="4" typeclass="Pointer" iecname="POINTER TO BYTE" />
-    <TypeSimple name="T_POINTER_TO_CmpIecTask_Task_Info2" size="4" swapsize="4" typeclass="Pointer" iecname="POINTER TO CmpIecTask.Task_Info2" />
-    <TypeSimple name="T_POINTER_TO_Jitter_Distribution" size="4" swapsize="4" typeclass="Pointer" iecname="POINTER TO Jitter_Distribution" />
-    <TypeSimple name="T_POINTER_TO_STRING" size="4" swapsize="4" typeclass="Pointer" iecname="POINTER TO STRING" />
     <TypeUserDef name="T_STATUS" size="2" nativesize="2" swapsize="2" typeclass="Enum" iecname="STATUS" basetype="T_INT">
       <UserDefElement type="T_STATUS" iecname="NOT_COMMUNICATION" enumvalue="0" />
       <UserDefElement type="T_STATUS" iecname="OFF" enumvalue="1" />
@@ -37,8 +21,7 @@
       <UserDefElement type="T_STATUS" iecname="MOVING" enumvalue="3" />
       <UserDefElement type="T_STATUS" iecname="ERROR" enumvalue="4" />
     </TypeUserDef>
-    <TypeSimple name="T_CmpIecTask_RTS_IEC_HANDLE" size="4" swapsize="4" typeclass="Pointer" iecname="CmpIecTask.RTS_IEC_HANDLE" aliasedtype="T_POINTER_TO_BYTE" aliasediecname="POINTER TO BYTE" />
-    <TypeUserDef name="T_StandLogic" size="9" nativesize="40" typeclass="Userdef" pouclass="FUNCTION_BLOCK" iecname="StandLogic">
+    <TypeUserDef name="T_StandLogic" size="9" nativesize="44" typeclass="Userdef" pouclass="FUNCTION_BLOCK" iecname="StandLogic">
       <UserDefElement iecname="autoMoveStatus" type="T_AUTO_MOVE_STEPS" byteoffset="0" vartype="VAR" access="ReadWrite" />
       <UserDefElement iecname="objectStatus" type="T_STATUS" byteoffset="2" vartype="VAR" access="ReadWrite" />
       <UserDefElement iecname="cmdPowerOn" type="T_BOOL" byteoffset="4" vartype="VAR" access="ReadWrite" />
@@ -46,41 +29,6 @@
       <UserDefElement iecname="cmdForwardJogging" type="T_BOOL" byteoffset="6" vartype="VAR" access="ReadWrite" />
       <UserDefElement iecname="cmdBackwardJogging" type="T_BOOL" byteoffset="7" vartype="VAR" access="ReadWrite" />
       <UserDefElement iecname="cmdAutoMove" type="T_BOOL" byteoffset="8" vartype="VAR" access="ReadWrite" />
-    </TypeUserDef>
-    <TypeUserDef name="T_Task_Info2" size="88" nativesize="88" typeclass="Userdef" pouclass="STRUCTURE" iecname="Task_Info2">
-      <UserDefElement iecname="dwVersion" type="T_DWORD" byteoffset="0" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="pszName" type="T_POINTER_TO_STRING" byteoffset="4" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="nPriority" type="T_INT" byteoffset="8" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="KindOfTask" type="T_INT" byteoffset="10" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="bWatchdog" type="T_BOOL" byteoffset="12" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="bProfiling" type="T_BOOL" byteoffset="13" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwEventFunctionPointer" type="T_POINTER_TO_BYTE" byteoffset="16" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="pszExternalEvent" type="T_POINTER_TO_STRING" byteoffset="20" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwTaskEntryFunctionPointer" type="T_POINTER_TO_BYTE" byteoffset="24" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwWatchdogSensitivity" type="T_DWORD" byteoffset="28" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwInterval" type="T_DWORD" byteoffset="32" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwWatchdogTime" type="T_DWORD" byteoffset="36" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwCycleTime" type="T_DWORD" byteoffset="40" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwAverageCycleTime" type="T_DWORD" byteoffset="44" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwMaxCycleTime" type="T_DWORD" byteoffset="48" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwMinCycleTime" type="T_DWORD" byteoffset="52" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="iJitter" type="T_DINT" byteoffset="56" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="iJitterMin" type="T_DINT" byteoffset="60" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="iJitterMax" type="T_DINT" byteoffset="64" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwCycleCount" type="T_DWORD" byteoffset="68" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="iState" type="T_WORD" byteoffset="72" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="wNumOfJitterDistributions" type="T_WORD" byteoffset="74" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="pJitterDistribution" type="T_POINTER_TO_Jitter_Distribution" byteoffset="76" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="bTimeSlicing" type="T_BOOL" byteoffset="80" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="byDummy" type="T_BYTE" byteoffset="81" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="wDummy" type="T_WORD" byteoffset="82" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="dwIECCycleCount" type="T_DWORD" byteoffset="84" vartype="VAR" access="ReadWrite" />
-    </TypeUserDef>
-    <TypeUserDef name="T_TaskData" size="100" nativesize="104" typeclass="Userdef" pouclass="FUNCTION_BLOCK" iecname="TaskData">
-      <UserDefElement iecname="hTask" type="T_CmpIecTask_RTS_IEC_HANDLE" byteoffset="0" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="result" type="T_CmpIecTask_RTS_IEC_RESULT" byteoffset="4" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="pCurrentTaskInfo" type="T_POINTER_TO_CmpIecTask_Task_Info2" byteoffset="8" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="CurrentTaskInfo" type="T_Task_Info2" byteoffset="12" vartype="VAR" access="ReadWrite" />
     </TypeUserDef>
   </TypeList>
   <NodeList>
