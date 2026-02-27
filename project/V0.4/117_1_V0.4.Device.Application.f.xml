@@ -21,7 +21,7 @@
       <UserDefElement type="T_STATUS" iecname="MOVING" enumvalue="3" />
       <UserDefElement type="T_STATUS" iecname="ERROR" enumvalue="4" />
     </TypeUserDef>
-    <TypeUserDef name="T_StandLogic" size="9" nativesize="44" typeclass="Userdef" pouclass="FUNCTION_BLOCK" iecname="StandLogic">
+    <TypeUserDef name="T_StandLogic" size="9" nativesize="80" typeclass="Userdef" pouclass="FUNCTION_BLOCK" iecname="StandLogic">
       <UserDefElement iecname="autoMoveStatus" type="T_AUTO_MOVE_STEPS" byteoffset="0" vartype="VAR" access="ReadWrite" />
       <UserDefElement iecname="objectStatus" type="T_STATUS" byteoffset="2" vartype="VAR" access="ReadWrite" />
       <UserDefElement iecname="cmdPowerOn" type="T_BOOL" byteoffset="4" vartype="VAR" access="ReadWrite" />
