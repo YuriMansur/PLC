@@ -5,37 +5,5 @@
     <SymbolConfigObject version="4.0.0.0" runtimeid="3.5.15.40" libversion="3.5.17.0" compiler="3.5.17.30" lmm="3.5.17.0" profile="CODESYS V3.5 SP17 Patch 3+" settings="SupportOPCUA, LayoutCalculator=OptimizedClientSideLayoutCalculator" />
     <ProjectInfo name="117_1_V0.4" devicename="Device" appname="Application" />
   </Header>
-  <TypeList>
-    <TypeSimple name="T_BOOL" size="1" swapsize="0" typeclass="Bool" iecname="BOOL" />
-    <TypeSimple name="T_INT" size="2" swapsize="2" typeclass="Int" iecname="INT" />
-    <TypeUserDef name="T_AUTO_MOVE_STEPS" size="2" nativesize="2" swapsize="2" typeclass="Enum" iecname="AUTO_MOVE_STEPS" basetype="T_INT">
-      <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="AWAIT" enumvalue="0" />
-      <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="INJECTION" enumvalue="1" />
-      <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="RETENTION" enumvalue="2" />
-      <UserDefElement type="T_AUTO_MOVE_STEPS" iecname="FAILING" enumvalue="3" />
-    </TypeUserDef>
-    <TypeUserDef name="T_STATUS" size="2" nativesize="2" swapsize="2" typeclass="Enum" iecname="STATUS" basetype="T_INT">
-      <UserDefElement type="T_STATUS" iecname="NOT_COMMUNICATION" enumvalue="0" />
-      <UserDefElement type="T_STATUS" iecname="OFF" enumvalue="1" />
-      <UserDefElement type="T_STATUS" iecname="READY" enumvalue="2" />
-      <UserDefElement type="T_STATUS" iecname="MOVING" enumvalue="3" />
-      <UserDefElement type="T_STATUS" iecname="ERROR" enumvalue="4" />
-    </TypeUserDef>
-    <TypeUserDef name="T_StandLogic" size="9" nativesize="88" typeclass="Userdef" pouclass="FUNCTION_BLOCK" iecname="StandLogic">
-      <UserDefElement iecname="autoMoveStatus" type="T_AUTO_MOVE_STEPS" byteoffset="0" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="objectStatus" type="T_STATUS" byteoffset="2" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="cmdPowerOn" type="T_BOOL" byteoffset="4" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="cmdPowerOff" type="T_BOOL" byteoffset="5" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="cmdForwardJogging" type="T_BOOL" byteoffset="6" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="cmdBackwardJogging" type="T_BOOL" byteoffset="7" vartype="VAR" access="ReadWrite" />
-      <UserDefElement iecname="cmdAutoMove" type="T_BOOL" byteoffset="8" vartype="VAR" access="ReadWrite" />
-    </TypeUserDef>
-  </TypeList>
-  <NodeList>
-    <Node name="Application">
-      <Node name="MAIN">
-        <Node name="StandLogicEx" type="T_StandLogic" access="ReadWrite" />
-      </Node>
-    </Node>
-  </NodeList>
+  <TypeList />
 </Symbolconfiguration>
