@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-03-26T18:14:32.4070562">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">117_1_V0.5</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="SM3ServoDriver" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="TimeManager">
+              <type>
+                <derived name="REFERENCE TO TimeManager" />
+              </type>
+            </variable>
+          </inputVars>
+          <localVars>
+            <variable name="_CheckAxisCommuniction">
+              <type>
+                <derived name="SMC_CheckAxisCommunication" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Проверка  связи с драйвером</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_CheckPowerStatus">
+              <type>
+                <derived name="MC_ReadBoolParameter" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Прверка питания драйвера</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_pNum">
+              <type>
+                <UINT />
+              </type>
+            </variable>
+            <variable name="_powerStatusValue">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <BOOL />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="_Power">
+              <type>
+                <derived name="MC_Power" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Управление питанием драйвера</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_powerSteps">
+              <type>
+                <UINT />
+              </type>
+            </variable>
+            <variable name="_Jogging">
+              <type>
+                <derived name="MC_Jog" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Ручной режим</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_FollowVelocity">
+              <type>
+                <derived name="SMC_FollowVelocity" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml">Режим управления скоростью</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_Reset_Errors">
+              <type>
+                <derived name="MC_Reset" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Сброс аварий</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_reset_Enable">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="_bErrors">
+              <type>
+                <array>
+                  <dimension lower="communication" upper="(lastIndex - 1)" />
+                  <baseType>
+                    <BOOL />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Дата и время для логов
+ Сбор ошобок в слово</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_wAxisErrors">
+              <type>
+                <BYTE />
+              </type>
+            </variable>
+            <variable name="_ErrorsFlag">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="_eAxisErrorsID">
+              <type>
+                <array>
+                  <dimension lower="communication" upper="(lastIndex - 1)" />
+                  <baseType>
+                    <derived name="SMC_ERROR" />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 	Данные для флагов ошибок и записи в лог</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_sComments">
+              <type>
+                <array>
+                  <dimension lower="communication" upper="(lastIndex - 1)" />
+                  <baseType>
+                    <string length="40" />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="_trErrorsTrigs">
+              <type>
+                <array>
+                  <dimension lower="communication" upper="(lastIndex - 1)" />
+                  <baseType>
+                    <derived name="R_TRIG" />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="_axisErrorsLog">
+              <type>
+                <array>
+                  <dimension lower="0" upper="9" />
+                  <baseType>
+                    <string length="100" />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Лог</xhtml>
+              </documentation>
+            </variable>
+            <variable name="_logSize">
+              <type>
+                <UINT />
+              </type>
+            </variable>
+            <variable name="_errorIndex">
+              <type>
+                <derived name="ERROR_INDEX" />
+              </type>
+            </variable>
+          </localVars>
+          <localVars constant="true">
+            <variable name="dPowerParameter">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <DINT />
+                  </baseType>
+                </array>
+              </type>
+              <initialValue>
+                <arrayValue>
+                  <value>
+                    <simpleValue value="1015" />
+                  </value>
+                  <value>
+                    <simpleValue value="1016" />
+                  </value>
+                </arrayValue>
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">// Проверка связи
+_CheckAxisCommuniction(
+	Axis	:= SM_Drive_GenericDSP402,
+	bEnable := TRUE);
+
+//Проверка наличия питания
+FOR _pNum := 0 TO 1 DO
+	_CheckPowerStatus(
+		Axis			:= SM_Drive_GenericDSP402,
+		Enable			:= TRUE,
+		ParameterNumber	:= dPowerParameter[_pNum],
+		Value			=&gt; _powerStatusValue[_pNum]); 
+END_FOR
+
+// Питание драйвера
+_Power(Axis	:= SM_Drive_GenericDSP402);
+
+// Ручное управление дравером
+_Jogging(Axis := SM_Drive_GenericDSP402); 
+
+//Режим управления скоростью
+_FollowVelocity(Axis := SM_Drive_GenericDSP402);
+
+// Сброс ошибок
+_Reset_Errors(Axis:= SM_Drive_GenericDSP402, Execute:= _reset_Enable); 
+
+// // Запись флагов ошибок ФБ в массив
+// _bErrors[communication]	 := _CheckAxisCommuniction.bError;
+// _bErrors[power]			 := _Power.Error;
+// _bErrors[jogging]		 := _Jogging.Error;
+// _bErrors[follow]		 := _FollowVelocity.bError;
+// _bErrors[reset]			 := _Reset_Errors.Error;
+
+// Запись ошибок
+FOR _errorIndex := communication TO lastIndex - 1 DO
+	// Триггеры ошибок для записи в лог	
+	_trErrorsTrigs[_errorIndex](CLK := _bErrors[_errorIndex]);
+	
+	// 	Формирование слова ошибок
+    IF _bErrors[_errorIndex] THEN
+        _wAxisErrors := _wAxisErrors OR SHL(BYTE#1, _errorIndex);
+	ELSE
+		_wAxisErrors := _wAxisErrors AND NOT SHL(BYTE#1, _errorIndex);
+    END_IF
+	
+END_FOR
+
+// Идентификаторы ошибок
+_eAxisErrorsID	[communication]	:= _CheckAxisCommuniction.eErrorID;
+_eAxisErrorsID	[power]			:= _Power.ErrorID;
+_eAxisErrorsID	[jogging]		:= _Jogging.ErrorID;
+_eAxisErrorsID	[follow]		:= _FollowVelocity.iErrorID;
+_eAxisErrorsID	[reset]			:= _Reset_Errors.ErrorID;
+
+//Коментарии к ошибкам
+_sComments		[communication] := 'Ошибка при диагностике связи';
+_sComments		[power]			:= 'Ошибка при включении питания драйвера';
+_sComments		[jogging]		:= 'Ошибка при ручном управлении';
+_sComments		[follow]		:= 'Ошибка при управлении скоростью';
+_sComments		[reset]			:= 'Ошибка при сбросе ошибок';
+
+// Метод для записи ошибки в лог
+FOR _errorIndex := communication TO lastIndex - 1 DO
+_error_handler(
+	bError		:= _trErrorsTrigs[_errorIndex].Q,
+	arrIndex	:= _errorIndex,
+	eErrorID	:= _eAxisErrorsID[_errorIndex],
+	sComment	:= _sComments[_errorIndex]
+);	
+END_FOR
+
+_ErrorsFlag	:= _wAxisErrors &gt; 0;
+
+
+
+
+</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="stop_follow_velocity">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_FollowVelocity.bExecute		:= FALSE;
+_FollowVelocity.fSetVelocity	:= 0.0; 
+	
+stop_follow_velocity := _FollowVelocity.bBusy; </xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

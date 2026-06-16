@@ -1,0 +1,22 @@
+#!/bin/sh
+# pre-commit: автоэкспорт кода CODESYS в PLCopen XML перед коммитом.
+#
+# Установка (один раз, из корня репо):
+#   git config core.hooksPath scripts/git-hooks
+#
+# ⚠️ Запускает CODESYS headless (~20-40 с старт). Проект должен быть СОХРАНЁН
+#    в CODESYS — экспортируется .project с диска, не открытая сессия.
+
+echo "[pre-commit] CODESYS export -> src_xml/ ..."
+
+# Запуск bat через cmd (мы в Git Bash на Windows)
+cmd.exe //c "scripts\\run_export.bat"
+if [ $? -ne 0 ]; then
+  echo "[pre-commit] ОШИБКА экспорта — коммит прерван."
+  exit 1
+fi
+
+# Добавить обновлённый экспорт в коммит
+git add src_xml
+echo "[pre-commit] src_xml обновлён и добавлен в коммит."
+exit 0

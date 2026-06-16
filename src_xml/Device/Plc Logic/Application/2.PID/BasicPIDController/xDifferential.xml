@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-03-26T18:14:32.4070562">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">117_1_V0.5</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="BasicPIDController" pouType="functionBlock">
+        <interface>
+          <localVars>
+            <variable name="_Pv">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Sp">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Kp">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Ki">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Kd">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Ts">
+              <type>
+                <TIME />
+              </type>
+            </variable>
+            <variable name="_Error">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Output">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_MinOut">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_MaxOut">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Direction">
+              <type>
+                <derived name="PID_DIRECTION_UDT" />
+              </type>
+            </variable>
+            <variable name="_PreviousError">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Proportional">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Integral">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Differential">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Status">
+              <type>
+                <derived name="PID_STATUS_UDT" />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">//Включение ПИД
+IF _Status &lt;&gt; Enabled THEN
+	Reset();	//Integral := 0; PreviousError := 0;Output := 0;
+	RETURN;
+ELSE
+//Значение текущей ошибки
+_Error			:= xError(); //CASE Direction OF DIRECT:xError := (Sp - Pv) * 1.0; REVERSE:xError := (Sp - Pv) * -1.0; END_CASE
+// Пропорционал
+_Proportional	:= xProportional();	//xProportional := Kp * Error;
+// Интеграл
+_Integral		:= xIntegral();	//xIntegral := LIMIT(OutMin, (Integral + Ki * Error * ((TIME_TO_REAL (Ts)) / 1000)), OutMax);
+// ДиФФеренциал
+_Differential	:= xDifferential(); //xDifferential := Kd * (Error - PreviousError) / ((TIME_TO_REAL (Ts)) / 1000);
+//Значение предыдущей ошибки
+_PreviousError	:= _Error;
+//Выход ПИД
+_Output := LIMIT(_MinOut, _Proportional + _Integral + _Differential, _MaxOut);
+END_IF
+
+
+
+</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="xDifferential">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">xDifferential := _Kd * (_Error - _PreviousError) / ((TIME_TO_REAL (_Ts)) / 1000);</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

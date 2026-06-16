@@ -1,0 +1,15 @@
+# CODESYS — артефакты компиляции и кэш (регенерируются при сборке)
+*.bootinfo
+*.bootinfo_guids
+*.compileinfo
+*.precompilecache
+
+# Настройки вида IDE (в т.ч. привязанные к имени машины: *-<HOST>.opt)
+*.opt
+
+# Бэкапы / временные файлы CODESYS
+*.bak
+~*.*
+
+# Ручные экспорты в корне V0.x (код кладём в src_xml/ скриптом)
+project/V0.5/*.xml

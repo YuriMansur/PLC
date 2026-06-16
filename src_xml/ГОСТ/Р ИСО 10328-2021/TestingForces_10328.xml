@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-03-26T18:14:32.4070562">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">117_1_V0.5</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="TestingForces_10328" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="P">
+              <type>
+                <derived name="E_P3_8" />
+              </type>
+            </variable>
+            <variable name="I_II">
+              <type>
+                <derived name="E_I_II" />
+              </type>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Fstab">
+              <type>
+                <UDINT />
+              </type>
+            </variable>
+            <variable name="Fset">
+              <type>
+                <UDINT />
+              </type>
+            </variable>
+            <variable name="Fsp">
+              <type>
+                <UDINT />
+              </type>
+            </variable>
+            <variable name="F_su_lower_level">
+              <type>
+                <UDINT />
+              </type>
+            </variable>
+            <variable name="F_su_upper_level">
+              <type>
+                <UDINT />
+              </type>
+            </variable>
+          </outputVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">CASE P OF
+	
+	P3:
+		CASE I_II OF
+			I: 
+				Fstab				:= 50;
+				Fset				:= 736;
+				Fsp					:= 1610;	
+ 				F_su_lower_level	:= 2415;		
+				F_su_upper_level	:= 3220;
+			II:   
+				Fstab				:= 50;
+				Fset				:= 638; 
+				Fsp					:= 1395;
+				F_su_lower_level	:= 2092;
+				F_su_upper_level	:= 2790;
+		END_CASE
+		
+	P4:
+		CASE I_II OF
+			I: 
+				Fstab				:= 50;
+				Fset				:= 944; 
+				Fsp					:= 2065;
+				F_su_lower_level	:= 3098;
+				F_su_upper_level	:= 4130;
+			II: 
+				Fstab				:= 50;
+				Fset				:= 828; 
+				Fsp					:= 1811; 
+				F_su_lower_level	:= 2717;
+				F_su_upper_level	:= 3623;
+		END_CASE
+		
+	P5:
+		CASE I_II OF
+			I: 
+				Fstab				:= 50;
+				Fset				:= 1024;
+				Fsp					:= 2240;
+				F_su_lower_level	:= 3360;
+				F_su_upper_level	:= 4480;
+			II:  
+				Fstab 				:= 50; 
+				Fset  				:= 920;
+				Fsp					:= 2013;	
+				F_su_lower_level	:= 3019;
+				F_su_upper_level	:= 4025;
+		END_CASE	
+		
+	P6:
+		CASE I_II OF
+			I: 
+				Fstab				:= 50;
+				Fset				:= 1224;
+				Fsp					:= 2490;
+				F_su_lower_level	:= 3760;
+				F_su_upper_level	:= 4480;
+			II:  
+				Fstab 				:= 50; 
+				Fset  				:= 1120;
+				Fsp					:= 2263;	
+				F_su_lower_level	:= 3419;
+				F_su_upper_level	:= 4425;
+		END_CASE	
+		
+	P7:
+		CASE I_II OF
+			I: 
+				Fstab				:= 50;
+				Fset				:= 1416;
+				Fsp					:= 2900;
+				F_su_lower_level	:= 4100;
+				F_su_upper_level	:= 5300;
+			II:  
+				Fstab 				:= 50; 
+				Fset  				:= 1360;
+				Fsp					:= 2650;	
+				F_su_lower_level	:= 3775;
+				F_su_upper_level	:= 4840;
+		END_CASE		
+		
+	P8:
+		CASE I_II OF
+			I: 
+				Fstab				:= 50;
+				Fset				:= 1640;
+				Fsp					:= 3200;
+				F_su_lower_level	:= 4450;
+				F_su_upper_level	:= 5700;
+			II:  
+				Fstab 				:= 50; 
+				Fset  				:= 1560;
+				Fsp					:= 2950;	
+				F_su_lower_level	:= 4150;
+				F_su_upper_level	:= 5250;
+		END_CASE	
+END_CASE</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>
