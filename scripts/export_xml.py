@@ -65,8 +65,12 @@ def _export_object(proj, obj, out_dir, parts):
     folder = os.path.dirname(path)
     if not os.path.isdir(folder):
         os.makedirs(folder)
-    # [VERIFY] сигнатура: export_xml(objects, path, recursive)
-    proj.export_xml([obj], path, False)
+    # recursive=True — POU/FB выгружается ЦЕЛИКОМ: тело + ВСЕ методы/свойства/
+    # действия вложены в ОДИН файл. Так файл самодостаточен и импортируется в
+    # Application одним вызовом (Replace создаёт FB сразу со всеми методами).
+    # (Прежний вывод «recursive=True теряет методы» был ложным — он получен на
+    #  ИСПОРЧЕННОМ проекте, где у FB реально оставалось по 1 методу.)
+    proj.export_xml([obj], path, True)
     _normalize(path)
     print("export: " + rel + ".xml")
 
@@ -81,18 +85,50 @@ def _normalize(path):
             f.write(fixed.encode("utf-8"))
 
 
-def _walk(proj, node, out_dir, parts):
-    """Рекурсивный обход: листовые объекты → отдельные XML, папки → структура.
+def _is_container(node, children):
+    """Узел, в который НАДО спускаться (а не экспортировать целиком): папка,
+    устройство, приложение — или узел-обёртка над ними (напр. 'Plc Logic',
+    чей ребёнок — Application). POU/DUT/GVL контейнерами НЕ считаются.
 
-    Экспортируем ВСЁ, кроме устройства/задач (is_device/is_task). Код проекта
-    живёт не только под Application (напр. проектные GVL в папке 'ГОСТ'),
-    поэтому ограничивать обход поддеревом Application нельзя — потеряем код."""
+    ВАЖНО: по детям проверяем ТОЛЬКО application/device, а НЕ is_folder. У FB
+    бывают ВНУТРЕННИЕ папки методов (напр. SM3ServoDriver → Private/Public,
+    TimeManager → DateAndTime/TaskData). Если считать FB контейнером из-за такой
+    папки — спустимся внутрь и наделаем битых per-method файлов, а методы не
+    соберутся. FB должен уйти ОДНИМ файлом (recursive=True вложит и папки методов).
+
+    children — снимок get_children (см. _walk)."""
+    if (getattr(node, "is_folder", False) or getattr(node, "is_device", False)
+            or getattr(node, "is_application", False)):
+        return True
+    for c in children:
+        if getattr(c, "is_application", False) or getattr(c, "is_device", False):
+            return True
+    return False
+
+
+def _walk(proj, node, out_dir, parts):
+    """Обход дерева:
+      - папка/устройство/приложение → сам не объект кода, ТОЛЬКО спускаемся внутрь;
+      - POU/FB/DUT/GVL              → экспортируем ЦЕЛИКОМ (recursive=True) одним
+                                      файлом и в его дети-методы НЕ спускаемся —
+                                      они уже вложены в этот файл.
+
+    Один файл = один самодостаточный POU/FB со всеми методами. Это импортируется
+    в Application одним вызовом. (Раскладка «метод = отдельный файл» не годится:
+    каждый такой файл содержит полную обёртку родительского FB и не импортируется
+    ни в FB, ни плоско в Application.)
+
+    Код живёт не только под Application (напр. проектные GVL в папке 'ГОСТ'),
+    поэтому обход не ограничиваем поддеревом Application."""
     name = node.get_name(False)
-    children = node.get_children(False)   # False = только прямые потомки
-    if children:
+    children = list(node.get_children(False))
+    if _is_container(node, children):
+        # чистый контейнер — только спускаемся внутрь
         for child in children:
             _walk(proj, child, out_dir, parts + [name])
-    elif _is_code_container(node):
+        return
+    if _is_code_container(node):
+        # POU/FB целиком (методы вложены recursive=True) — в детей НЕ спускаемся
         _export_object(proj, node, out_dir, parts + [name])
 
 

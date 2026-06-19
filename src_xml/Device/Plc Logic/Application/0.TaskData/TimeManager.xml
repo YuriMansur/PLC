@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
-  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-03-26T18:14:32.4070562">
+  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-06-16T22:51:19.9979415">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -123,6 +123,124 @@ DateAndTime(xExecute := TRUE);
 		get_interval_time_type_INT  := DWORD_TO_INT(CurrentTaskInfo.dwInterval / 1000);
 	US:                                          
 		get_interval_time_type_INT := DWORD_TO_INT(CurrentTaskInfo.dwInterval);
+END_CASE
+
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="get_date_time">
+              <interface>
+                <returnType>
+                  <DT />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">get_date_time := _dateAndTime;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="get_interval_time_type_REAL">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+                <inputVars>
+                  <variable name="measurementUnits">
+                    <type>
+                      <derived name="MEASUREMENT_UNITS" />
+                    </type>
+                  </variable>
+                </inputVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">CASE measurementUnits OF
+	MS:                               
+		get_interval_time_type_REAL  := DWORD_TO_REAL(CurrentTaskInfo.dwInterval / 1000);
+	US:                              
+		get_interval_time_type_REAL  := DWORD_TO_REAL(CurrentTaskInfo.dwInterval);
+END_CASE
+
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="get_cycle_count">
+              <interface>
+                <returnType>
+                  <UDINT />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">get_cycle_count := DWORD_TO_UDINT(CurrentTaskInfo.dwCycleCount);
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="get_interval_time_type_TIME">
+              <interface>
+                <returnType>
+                  <TIME />
+                </returnType>
+                <inputVars>
+                  <variable name="measurementUnits">
+                    <type>
+                      <derived name="MEASUREMENT_UNITS" />
+                    </type>
+                  </variable>
+                </inputVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">CASE measurementUnits OF
+	MS:                               
+		get_interval_time_type_TIME  := DWORD_TO_TIME(CurrentTaskInfo.dwInterval / 1000);
+	US:                                          
+		get_interval_time_type_TIME  := DWORD_TO_time(CurrentTaskInfo.dwInterval);
+END_CASE
+
+ </xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="get_interval_time_type_UINT">
+              <interface>
+                <returnType>
+                  <UINT />
+                </returnType>
+                <inputVars>
+                  <variable name="measurementUnits">
+                    <type>
+                      <derived name="MEASUREMENT_UNITS" />
+                    </type>
+                  </variable>
+                </inputVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">CASE measurementUnits OF
+	MS:                               
+		get_interval_time_type_UINT  := DWORD_TO_UINT(CurrentTaskInfo.dwInterval / 1000);
+	US:                                          
+		get_interval_time_type_UINT  := DWORD_TO_uint(CurrentTaskInfo.dwInterval);
 END_CASE
 
 </xhtml>

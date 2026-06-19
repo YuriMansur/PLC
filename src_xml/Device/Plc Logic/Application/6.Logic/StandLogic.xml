@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project xmlns="http://www.plcopen.org/xml/tc6_0200">
   <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
-  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-03-26T18:14:32.4070562">
+  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-06-16T22:51:19.9979415">
     <coordinateInfo>
       <fbd>
         <scaling x="1" y="1" />
@@ -710,6 +710,374 @@ _write_outputs();
         </body>
         <addData>
           <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_move_algorythm">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inputVars>
+                  <variable name="enable">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                  <variable name="kp">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="ki">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="kd">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="min_out">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="max_out">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="pv">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="sp">
+                    <type>
+                      <REAL />
+                    </type>
+                  </variable>
+                  <variable name="laststep">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                </inputVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">IF enable THEN
+	PIDController.Set_Configuration(
+								Kp		:= kp,
+								Ki		:= ki,
+								Kd		:= kd,
+								MinOut	:= min_out,
+								MaxOut	:= max_out,
+								Ts		:= TimeManager.get_interval_time_type_TIME(ms),
+	);
+															
+PIDController.Enable();
+
+
+
+PIDController.Reset();
+
+PIDController.Get_Diagnostics();
+
+
+
+// Управление скоростью
+_move_algorythm := ServoDriver.start_follow_velocity(PIDController.xOutput);
+
+ELSE
+	PIDController.Disable();
+	_move_algorythm := ServoDriver.stop_follow_velocity();
+END_IF</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_get_status">
+              <interface>
+                <returnType>
+                  <derived name="STATUS" />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">IF isError THEN
+    _get_status := ERROR;
+ELSIF NOT isStateAxisOperational THEN
+    _get_status := NOT_COMMUNICATION;
+ELSIF NOT isPowerStatus THEN
+    _get_status := OFF;
+ELSIF isMoving THEN
+    _get_status := MOVING;
+ELSE
+    _get_status := READY;
+END_IF
+		
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_change_control_mode">
+              <interface>
+                <returnType>
+                  <derived name="CONTROL_MODE" />
+                </returnType>
+                <inOutVars>
+                  <variable name="changeMode">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                </inOutVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">IF changeMode THEN
+	IF isMoving THEN
+		changeMode := FALSE;
+	ELSE 
+		IF (_controlMode = MANUAL) THEN
+			_controlMode := AUTO;
+			changeMode	:= FALSE;
+		ELSIF (_controlMode = AUTO) THEN
+			_controlMode := MANUAL;
+			changeMode	:= FALSE;
+		END_IF
+	END_IF
+END_IF
+
+_change_control_mode := _controlMode;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_jogging">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inputVars>
+                  <variable name="cmdForward">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команда на прямое перемещение</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="cmdBackward">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команда на обратное перемещение</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="velocity">
+                    <type>
+                      <LREAL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Скорость перемещения</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="acceleration">
+                    <type>
+                      <LREAL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Ускорение</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="deceleration">
+                    <type>
+                      <LREAL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Замедление</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="jerk">
+                    <type>
+                      <LREAL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Резкость ускорения</xhtml>
+                    </documentation>
+                  </variable>
+                </inputVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_init">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inputVars>
+                  <variable name="execute">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                  <variable name="exciterEnable">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="FALSE" />
+                    </initialValue>
+                  </variable>
+                  <variable name="LimitSwitch">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="FALSE" />
+                    </initialValue>
+                  </variable>
+                </inputVars>
+                <localVars>
+                  <variable name="vv">
+                    <type>
+                      <BYTE />
+                    </type>
+                  </variable>
+                </localVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">
+
+ServoDriver.set_power_on();
+doForceExciter				:= TRUE;
+doForceRemoveLimitSwitch	:= FALSE;
+
+
+vv.0 := exciterEnable;
+
+_init :=  isError;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_alarm_notification">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inputVars>
+                  <variable name="alarm">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="FALSE" />
+                    </initialValue>
+                  </variable>
+                </inputVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+                <documentation>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">Поджигает светосигнальную колонну красным </xhtml>
+                </documentation>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">IF alarm THEN 
+	OutputManager.set_data(varName := outRedLightColumn,	enable := TRUE);
+	OutputManager.set_data(varName := outBuzzerLightColumn, enable := TRUE);
+ELSE
+	OutputManager.set_data(varName := outRedLightColumn,	enable := FALSE);
+	OutputManager.set_data(varName := outBuzzerLightColumn, enable := FALSE);
+END_IF</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_read_inputs">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">diLiveCircuitsDC		:= InputManager.get_discrete_data(inLiveCircuitsDC);
+diFirstAlarmMushroom	:= InputManager.get_discrete_data(inFirstAlarmMushroom);
+diSecondAlarmMushroom	:= InputManager.get_discrete_data(inSecondAlarmMushroom);
+diLiveCircuitsAC		:= InputManager.get_discrete_data(inLiveCircuitsAC);
+diUpsDC_OK				:= InputManager.get_discrete_data(inUpsDC_OK);
+diUpsBattaryBad			:= InputManager.get_discrete_data(inUpsBattaryBad);
+diUpsBattaryWork		:= InputManager.get_discrete_data(inUpsBattaryWork);
+diUpperLimitSwitch		:= InputManager.get_discrete_data(inUpperLimitSwitch);
+diLowerLimitSwitch		:= InputManager.get_discrete_data(inLowerLimitSwitch);
+diRemovingLimitSwitch	:= InputManager.get_discrete_data(inRemovingLimitSwitch);
+diExciter				:= InputManager.get_discrete_data(inExciter);
+diLeftDoor				:= InputManager.get_discrete_data(inLeftDoor);
+diRightDoor				:= InputManager.get_discrete_data(inRightDoor);
+
+_read_inputs := TRUE;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
             <Method name="_collect_errors">
               <interface>
                 <returnType>
@@ -752,6 +1120,196 @@ END_IF</xhtml>
               </body>
               <addData />
             </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_driver_power">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inOutVars>
+                  <variable name="PowerOnCmd">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команда на включение</xhtml>
+                    </documentation>
+                  </variable>
+                  <variable name="PowerOffCmd">
+                    <type>
+                      <BOOL />
+                    </type>
+                    <documentation>
+                      <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команда на отключение</xhtml>
+                    </documentation>
+                  </variable>
+                </inOutVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+                <documentation>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">Включение и отключение драйвера</xhtml>
+                </documentation>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">// Входные аргументы методов включения и отключения драйвера
+// нужны для корретного завершения вызова методов.
+// Т.к логика методов работает по шагам,
+// на следующих циклах после начала выполнения метода,
+// isPowerStatus сигнализирует о включенном питании,
+// тем самым заставляя метод прервать выполнение логики
+
+// Включение
+IF PowerOnCmd THEN
+	IF powerInclusionComplited := ServoDriver.set_power_on(isPowerStatus AND powerInclusionComplited) THEN
+		powerInclusionComplited := FALSE;
+		PowerOnCmd				:= FALSE;
+	END_IF
+	// Отключение
+ELSIF PowerOffCmd THEN
+	IF powerShutdownComplited := ServoDriver.set_power_off(NOT isPowerStatus AND powerShutdownComplited) THEN 
+		powerShutdownComplited	:= FALSE;
+		PowerOffCmd				:= FALSE;
+	END_IF
+END_IF</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_write_outputs">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">doStatePowerLightColumn		:= OutputManager.set_data(outPowerLightColumn	, doForcePowerLightColumn);	 
+doStateRedLightColumn 	 	:= OutputManager.set_data(outRedLightColumn		, doForceRedLightColumn); 	 
+doStateGreenLightColumn		:= OutputManager.set_data(outGreenLightColumn	, doForceGreenLightColumn);	 
+doStateBuzzerLightColumn	:= OutputManager.set_data(outBuzzerLightColumn	, doForceBuzzerLightColumn);
+doStateExciter		   		:= OutputManager.set_data(outExciter			, doForceExciter);		 
+doStateRemoveLimitSwitch	:= OutputManager.set_data(outRemoveLimitSwitch	, doForceRemoveLimitSwitch);</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_reset_alarms">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inputVars>
+                  <variable name="ResetError">
+                    <type>
+                      <BOOL />
+                    </type>
+                  </variable>
+                </inputVars>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">IF ResetError THEN 
+	IF ServoDriver.reset_errors() THEN 
+	;
+	END_IF
+	cmdErrorsReset := FALSE;
+END_IF</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_check_exciter">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_check_exciter := diExciter AND doStateExciter;
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="_check_removing_limit_switch">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_check_removing_limit_switch := diRemovingLimitSwitch AND doStateRemoveLimitSwitch;
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="read_control_mode">
+              <interface>
+                <returnType>
+                  <derived name="CONTROL_MODE" />
+                </returnType>
+                <Attributes>
+                  <Attribute Name="monitoring" Value="variable" />
+                </Attributes>
+              </interface>
+              <GetAccessor>
+                <interface>
+                  <addData>
+                    <data name="http://www.3s-software.com/plcopenxml/attributes" handleUnknown="implementation">
+                      <Attributes>
+                        <Attribute Name="monitoring" Value="variable" />
+                      </Attributes>
+                    </data>
+                  </addData>
+                </interface>
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">
+read_control_mode := _controlMode;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </GetAccessor>
+              <addData />
+            </Property>
           </data>
         </addData>
       </pou>

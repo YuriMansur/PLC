@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="117_1_V0.5.project" modificationDateTime="2026-06-16T22:51:19.9979415">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">117_1_V0.5</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="BasicPIDController" pouType="functionBlock">
+        <interface>
+          <localVars>
+            <variable name="_Pv">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Sp">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Kp">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Ki">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Kd">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Ts">
+              <type>
+                <TIME />
+              </type>
+            </variable>
+            <variable name="_Error">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Output">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_MinOut">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_MaxOut">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Direction">
+              <type>
+                <derived name="PID_DIRECTION_UDT" />
+              </type>
+            </variable>
+            <variable name="_PreviousError">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Proportional">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Integral">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Differential">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+            <variable name="_Status">
+              <type>
+                <derived name="PID_STATUS_UDT" />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">//Включение ПИД
+IF _Status &lt;&gt; Enabled THEN
+	Reset();	//Integral := 0; PreviousError := 0;Output := 0;
+	RETURN;
+ELSE
+//Значение текущей ошибки
+_Error			:= xError(); //CASE Direction OF DIRECT:xError := (Sp - Pv) * 1.0; REVERSE:xError := (Sp - Pv) * -1.0; END_CASE
+// Пропорционал
+_Proportional	:= xProportional();	//xProportional := Kp * Error;
+// Интеграл
+_Integral		:= xIntegral();	//xIntegral := LIMIT(OutMin, (Integral + Ki * Error * ((TIME_TO_REAL (Ts)) / 1000)), OutMax);
+// ДиФФеренциал
+_Differential	:= xDifferential(); //xDifferential := Kd * (Error - PreviousError) / ((TIME_TO_REAL (Ts)) / 1000);
+//Значение предыдущей ошибки
+_PreviousError	:= _Error;
+//Выход ПИД
+_Output := LIMIT(_MinOut, _Proportional + _Integral + _Differential, _MaxOut);
+END_IF
+
+
+
+</xhtml>
+          </ST>
+        </body>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="Set_Configuration">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+                <inputVars>
+                  <variable name="Kp">
+                    <type>
+                      <REAL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="0.1" />
+                    </initialValue>
+                  </variable>
+                  <variable name="Ki">
+                    <type>
+                      <REAL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="0" />
+                    </initialValue>
+                  </variable>
+                  <variable name="Kd">
+                    <type>
+                      <REAL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="0" />
+                    </initialValue>
+                  </variable>
+                  <variable name="Ts">
+                    <type>
+                      <TIME />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="TIME#100ms" />
+                    </initialValue>
+                  </variable>
+                  <variable name="MinOut">
+                    <type>
+                      <REAL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="0" />
+                    </initialValue>
+                  </variable>
+                  <variable name="MaxOut">
+                    <type>
+                      <REAL />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="100" />
+                    </initialValue>
+                  </variable>
+                  <variable name="Direction">
+                    <type>
+                      <derived name="PID_DIRECTION_UDT" />
+                    </type>
+                    <initialValue>
+                      <simpleValue value="DIRECT" />
+                    </initialValue>
+                  </variable>
+                </inputVars>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_Kp 		 := Kp;		
+_Ki 		 := Ki;		
+_Kd 		 := Kd;		
+_Ts			 := Ts;		
+_MinOut		 := MinOut;		
+_MaxOut		 := MaxOut;	
+_Direction   := Direction;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="Get_Diagnostics">
+              <interface>
+                <returnType>
+                  <derived name="PID_DIAGNOSTIC_UDT" />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">Get_Diagnostics.Error			:= _Error;			      
+Get_Diagnostics.PreviousError	:= _PreviousError;			
+Get_Diagnostics.Proportional	:= _Proportional;	 		
+Get_Diagnostics.Integral		:= _Integral;		    	
+Get_Diagnostics.Differential	:= _Differential;	 		
+Get_Diagnostics.Direction		:= _Direction;		   	
+Get_Diagnostics.Status			:= _Status;			     
+Get_Diagnostics.Kp 				:= _Kp; 		  
+Get_Diagnostics.Ki 				:= _Ki; 		  
+Get_Diagnostics.Kd 				:= _Kd; 		  
+Get_Diagnostics.Ts				:= _Ts;	   
+Get_Diagnostics.MinOut			:= _MinOut;	
+Get_Diagnostics.MaxOut			:= _MaxOut;	
+    </xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="xDifferential">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">xDifferential := _Kd * (_Error - _PreviousError) / ((TIME_TO_REAL (_Ts)) / 1000);</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="Enable">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_Status := Enabled;
+</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="Disable">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_Status := Disabled;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="xError">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">CASE _Direction OF
+DIRECT:
+	xError := (_Sp - _Pv) * 1.0;
+REVERSE:
+	xError := (_Sp - _Pv) * -1.0;
+END_CASE</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="xIntegral">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">xIntegral := LIMIT(_MinOut, (_Integral + _Ki * _Error * ((TIME_TO_REAL (_Ts)) / 1000)), _MaxOut);</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="Reset">
+              <interface>
+                <returnType>
+                  <BOOL />
+                </returnType>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">_Error			:= 0;
+_Integral		:= 0;
+_PreviousError	:= 0;
+_Output 		:= 0;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/method" handleUnknown="implementation">
+            <Method name="xProportional">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+                <addData>
+                  <data name="http://www.3s-software.com/plcopenxml/accessmodifiers" handleUnknown="implementation">
+                    <AccessModifiers Private="true" />
+                  </data>
+                </addData>
+              </interface>
+              <body>
+                <ST>
+                  <xhtml xmlns="http://www.w3.org/1999/xhtml">xProportional := _Kp * _Error;</xhtml>
+                </ST>
+              </body>
+              <addData />
+            </Method>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="xSp">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+              </interface>
+              <SetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">_Sp := xSp;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </SetAccessor>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">xSp := _Sp;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </GetAccessor>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="xPv">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+              </interface>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">xPv := _Pv;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </GetAccessor>
+              <SetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">_Pv := xPv;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </SetAccessor>
+              <addData />
+            </Property>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/property" handleUnknown="implementation">
+            <Property name="xOutput">
+              <interface>
+                <returnType>
+                  <REAL />
+                </returnType>
+              </interface>
+              <SetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml" />
+                  </ST>
+                </body>
+                <addData />
+              </SetAccessor>
+              <GetAccessor>
+                <interface />
+                <body>
+                  <ST>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml">xOutput := _Output;</xhtml>
+                  </ST>
+                </body>
+                <addData />
+              </GetAccessor>
+              <addData />
+            </Property>
+          </data>
+        </addData>
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>
