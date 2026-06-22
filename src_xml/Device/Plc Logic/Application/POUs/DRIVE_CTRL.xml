@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="static_torsion.project" modificationDateTime="2026-06-22T15:12:39.4699931">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">static_torsion</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="DRIVE_CTRL" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="fbPID">
+              <type>
+                <derived name="PID" />
+              </type>
+            </variable>
+          </localVars>
+          <localVars constant="true">
+            <variable name="PID_OUT_scale_">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="-1" />
+              </initialValue>
+            </variable>
+            <variable name="PID_SET_POINT_scale_">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="500" />
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">GVL.fbServo();
+
+IF GVL.Control.CalibrationMode THEN
+	// В режиме калибровки берем исходное нескорректированное значение момента от датчика в Нм
+	GVL.rActualTension := GVL.rTorque;
+ELSE
+	// В обычном режиме значение момента скорректированное (линеаризованное) в Нм
+	GVL.rActualTension := GVL.rTorqueCalibrated;
+END_IF
+
+// Задание момента приходит от АРМ в виде целого числа со знаком * 500. Пример: получаем по модбас 5000 =&gt; задание = 10.0 Нм
+GVL.rSetValue := TO_REAL(TO_INT(MODBUS_DATA.MB_TORQUE_SV)) / PID_SET_POINT_scale_;
+
+fbPID(
+	ACTUAL := GVL.rActualTension,
+	SET_POINT := GVL.rSetValue,
+	KP := GVL.KP,
+	TN := GVL.KI,
+	TV := GVL.KD,
+	Y_MANUAL := 0,
+	Y_OFFSET := 0,
+	Y_MIN := GVL.rYMin,
+	Y_MAX := GVL.rYMax,
+	MANUAL := FALSE,
+	RESET := FALSE,
+	Y=&gt; GVL.rY,
+	LIMITS_ACTIVE=&gt; ,
+	OVERFLOW=&gt; );
+	
+GVL.lrFollowVelocity := TO_LREAL(GVL.rY * PID_OUT_scale_);</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

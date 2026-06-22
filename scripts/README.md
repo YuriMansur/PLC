@@ -6,7 +6,7 @@
 
 ## Что хранится в Git (вариант A)
 ```
-project/V0.5/117_1_V0.5.project   # ШАБЛОН: «железо» (устройство, IO, task-config). Меняется редко.
+project/static_torsion.project    # ШАБЛОН: «железо» (устройство, IO, task-config). Меняется редко.
 src_xml/                          # КОД (POU/DUT/GVL) в PLCopen XML — по файлу на объект. Источник диффов.
 .gitignore                        # выкидывает артефакты компиляции/кэш/.opt
 ```

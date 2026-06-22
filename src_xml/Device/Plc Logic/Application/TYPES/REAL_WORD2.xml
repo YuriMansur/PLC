@@ -28,4 +28,26 @@
   <instances>
     <configurations />
   </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/union" handleUnknown="implementation">
+      <union name="REAL_WORD2">
+        <variable name="_REAL">
+          <type>
+            <REAL />
+          </type>
+        </variable>
+        <variable name="_WORDS">
+          <type>
+            <array>
+              <dimension lower="0" upper="1" />
+              <baseType>
+                <WORD />
+              </baseType>
+            </array>
+          </type>
+        </variable>
+        <addData />
+      </union>
+    </data>
+  </addData>
 </project>

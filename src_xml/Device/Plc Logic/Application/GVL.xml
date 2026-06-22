@@ -1,0 +1,794 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="static_torsion.project" modificationDateTime="2026-06-22T15:12:39.4699931">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">static_torsion</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous />
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/globalvars" handleUnknown="implementation">
+      <globalVars name="GVL">
+        <variable name="DEBUG">
+          <type>
+            <BOOL />
+          </type>
+          <initialValue>
+            <simpleValue value="TRUE" />
+          </initialValue>
+        </variable>
+        <variable name="ServoCommand">
+          <type>
+            <derived name="CTRL_ID" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Текущая команда управления сервоприводом</xhtml>
+          </documentation>
+        </variable>
+        <variable name="State">
+          <type>
+            <derived name="S_STATE" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Слово состояния</xhtml>
+          </documentation>
+        </variable>
+        <variable name="Control">
+          <type>
+            <derived name="S_CTRL" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Слово управления</xhtml>
+          </documentation>
+        </variable>
+        <variable name="DQ_Control">
+          <type>
+            <derived name="PDQ_OLD" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Прямое управление дискретными выходами (используется только в сервисном режиме)</xhtml>
+          </documentation>
+        </variable>
+        <variable name="UZ_Control">
+          <type>
+            <derived name="CTRL_ID" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Прямое управление сервоприводом (используется только в сервисном режиме)</xhtml>
+          </documentation>
+        </variable>
+        <variable name="fbAlarm">
+          <type>
+            <derived name="ALARM" />
+          </type>
+        </variable>
+        <variable name="fbServo">
+          <type>
+            <derived name="SERVO" />
+          </type>
+        </variable>
+        <variable name="xLS_DOOR_EN">
+          <type>
+            <BOOL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Если установлен, то контролировать открытие двери</xhtml>
+          </documentation>
+        </variable>
+        <variable name="xLS_UP_EN">
+          <type>
+            <BOOL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Если установлены, то контролировать КВ ВЕРХ и КВ НИЗ соответственно</xhtml>
+          </documentation>
+        </variable>
+        <variable name="xLS_DN_EN">
+          <type>
+            <BOOL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Если установлены, то контролировать КВ ВЕРХ и КВ НИЗ соответственно</xhtml>
+          </documentation>
+        </variable>
+        <variable name="DI">
+          <type>
+            <derived name="PDI" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Входы дискретные модуль A11 (ECAT-2053)</xhtml>
+          </documentation>
+        </variable>
+        <variable name="DQ">
+          <type>
+            <derived name="PDQ" />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Выходы дискретные модуль A13 (ECAT-2057)</xhtml>
+          </documentation>
+        </variable>
+        <variable name="iTorque_RAW">
+          <type>
+            <INT />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Значение момента с АЦП модуля</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rTorque">
+          <type>
+            <REAL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Нескорректированное начение момента от тензодатдатчика в Нм.</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rTorqueCalibrated">
+          <type>
+            <REAL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Скорректированное и масштабированное значение момента (модель и коэффициенты преобразования см. в функции расчета момента)</xhtml>
+          </documentation>
+        </variable>
+        <variable name="iTorqueScaled">
+          <type>
+            <INT />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Скорректированное  и масштабированное значение датчика момента (25000 = 50 Нм)</xhtml>
+          </documentation>
+        </variable>
+        <variable name="udiEncoder_RAW">
+          <type>
+            <UDINT />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Угол: измеренное абсолютное значение в условных единицах датчика</xhtml>
+          </documentation>
+        </variable>
+        <variable name="xPowerEnable">
+          <type>
+            <BOOL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Управление приводом</xhtml>
+          </documentation>
+        </variable>
+        <variable name="xMoveFollowExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="xMoveRelativeExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="xJogForwardExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="xJogBackwardExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="xResetExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="xStopExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="xHaltExec">
+          <type>
+            <BOOL />
+          </type>
+        </variable>
+        <variable name="lrFollowVelocity">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrRelativeVelocity">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrRelativeDistance">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrJogVelocity">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrRelativeAcc">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrRelativeDec">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrJogAcc">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="lrJogDec">
+          <type>
+            <LREAL />
+          </type>
+        </variable>
+        <variable name="iTorqueSV">
+          <type>
+            <INT />
+          </type>
+        </variable>
+        <variable name="iJogVelocity">
+          <type>
+            <INT />
+          </type>
+        </variable>
+        <variable name="rActualTension">
+          <type>
+            <REAL />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Управление параметрами ПИД регулятора</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rSetValue">
+          <type>
+            <REAL />
+          </type>
+        </variable>
+        <variable name="rYMin">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="-200" />
+          </initialValue>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> %%</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rYMax">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="200" />
+          </initialValue>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> %%</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rY">
+          <type>
+            <REAL />
+          </type>
+        </variable>
+        <variable name="iTorqueSensorRange">
+          <type>
+            <UINT />
+          </type>
+          <initialValue>
+            <simpleValue value="50" />
+          </initialValue>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Диапазон датчика момента в Нм</xhtml>
+          </documentation>
+        </variable>
+        <variable name="iTorque_ADC_offset">
+          <type>
+            <INT />
+          </type>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Смещение нулевого положения АЦП. Задается при вызове команды обнуления на этапе калибровки</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rA1">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="0" />
+          </initialValue>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Коэффициенты для модели аппроксимации датчика момента</xhtml>
+          </documentation>
+        </variable>
+        <variable name="rB1">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="1" />
+          </initialValue>
+        </variable>
+        <variable name="rC1">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="0" />
+          </initialValue>
+        </variable>
+        <variable name="rA2">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="1" />
+          </initialValue>
+        </variable>
+        <variable name="rB2">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="0" />
+          </initialValue>
+        </variable>
+        <variable name="udiEncoderOffset">
+          <type>
+            <UDINT />
+          </type>
+          <initialValue>
+            <simpleValue value="0" />
+          </initialValue>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Смещение нулевого положения датчика поворота</xhtml>
+          </documentation>
+        </variable>
+        <variable name="KP">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="10" />
+          </initialValue>
+          <documentation>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml"> Коэффициенты ПИД регулятора</xhtml>
+          </documentation>
+        </variable>
+        <variable name="KI">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="0.1" />
+          </initialValue>
+        </variable>
+        <variable name="KD">
+          <type>
+            <REAL />
+          </type>
+          <initialValue>
+            <simpleValue value="0" />
+          </initialValue>
+        </variable>
+        <addData>
+          <data name="http://www.3s-software.com/plcopenxml/attributes" handleUnknown="implementation">
+            <Attributes>
+              <Attribute Name="qualified_only" Value="" />
+            </Attributes>
+          </data>
+          <data name="http://www.3s-software.com/plcopenxml/mixedattrsvarlist" handleUnknown="implementation">
+            <MixedAttrsVarList>
+              <globalVars name="GVL">
+                <variable name="DEBUG">
+                  <type>
+                    <BOOL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="TRUE" />
+                  </initialValue>
+                </variable>
+                <variable name="ServoCommand">
+                  <type>
+                    <derived name="CTRL_ID" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Текущая команда управления сервоприводом</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="State">
+                  <type>
+                    <derived name="S_STATE" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Слово состояния</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="Control">
+                  <type>
+                    <derived name="S_CTRL" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Слово управления</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="DQ_Control">
+                  <type>
+                    <derived name="PDQ_OLD" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Прямое управление дискретными выходами (используется только в сервисном режиме)</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="UZ_Control">
+                  <type>
+                    <derived name="CTRL_ID" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Прямое управление сервоприводом (используется только в сервисном режиме)</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="fbAlarm">
+                  <type>
+                    <derived name="ALARM" />
+                  </type>
+                </variable>
+                <variable name="fbServo">
+                  <type>
+                    <derived name="SERVO" />
+                  </type>
+                </variable>
+                <variable name="xLS_DOOR_EN">
+                  <type>
+                    <BOOL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Если установлен, то контролировать открытие двери</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="xLS_UP_EN">
+                  <type>
+                    <BOOL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Если установлены, то контролировать КВ ВЕРХ и КВ НИЗ соответственно</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="xLS_DN_EN">
+                  <type>
+                    <BOOL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Если установлены, то контролировать КВ ВЕРХ и КВ НИЗ соответственно</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="DI">
+                  <type>
+                    <derived name="PDI" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Входы дискретные модуль A11 (ECAT-2053)</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="DQ">
+                  <type>
+                    <derived name="PDQ" />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Выходы дискретные модуль A13 (ECAT-2057)</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="iTorque_RAW">
+                  <type>
+                    <INT />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Значение момента с АЦП модуля</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rTorque">
+                  <type>
+                    <REAL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Нескорректированное начение момента от тензодатдатчика в Нм.</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rTorqueCalibrated">
+                  <type>
+                    <REAL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Скорректированное и масштабированное значение момента (модель и коэффициенты преобразования см. в функции расчета момента)</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="iTorqueScaled">
+                  <type>
+                    <INT />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Скорректированное  и масштабированное значение датчика момента (25000 = 50 Нм)</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="udiEncoder_RAW">
+                  <type>
+                    <UDINT />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Угол: измеренное абсолютное значение в условных единицах датчика</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="xPowerEnable">
+                  <type>
+                    <BOOL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Управление приводом</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="xMoveFollowExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="xMoveRelativeExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="xJogForwardExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="xJogBackwardExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="xResetExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="xStopExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="xHaltExec">
+                  <type>
+                    <BOOL />
+                  </type>
+                </variable>
+                <variable name="lrFollowVelocity">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrRelativeVelocity">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrRelativeDistance">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrJogVelocity">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrRelativeAcc">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrRelativeDec">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrJogAcc">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="lrJogDec">
+                  <type>
+                    <LREAL />
+                  </type>
+                </variable>
+                <variable name="iTorqueSV">
+                  <type>
+                    <INT />
+                  </type>
+                </variable>
+                <variable name="iJogVelocity">
+                  <type>
+                    <INT />
+                  </type>
+                </variable>
+                <variable name="rActualTension">
+                  <type>
+                    <REAL />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Управление параметрами ПИД регулятора</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rSetValue">
+                  <type>
+                    <REAL />
+                  </type>
+                </variable>
+                <variable name="rYMin">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="-200" />
+                  </initialValue>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> %%</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rYMax">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="200" />
+                  </initialValue>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> %%</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rY">
+                  <type>
+                    <REAL />
+                  </type>
+                </variable>
+              </globalVars>
+              <globalVars name="GVL" retain="true" persistent="true">
+                <variable name="iTorqueSensorRange">
+                  <type>
+                    <UINT />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="50" />
+                  </initialValue>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Диапазон датчика момента в Нм</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="iTorque_ADC_offset">
+                  <type>
+                    <INT />
+                  </type>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Смещение нулевого положения АЦП. Задается при вызове команды обнуления на этапе калибровки</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rA1">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="0" />
+                  </initialValue>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Коэффициенты для модели аппроксимации датчика момента</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="rB1">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="1" />
+                  </initialValue>
+                </variable>
+                <variable name="rC1">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="0" />
+                  </initialValue>
+                </variable>
+                <variable name="rA2">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="1" />
+                  </initialValue>
+                </variable>
+                <variable name="rB2">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="0" />
+                  </initialValue>
+                </variable>
+                <variable name="udiEncoderOffset">
+                  <type>
+                    <UDINT />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="0" />
+                  </initialValue>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Смещение нулевого положения датчика поворота</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="KP">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="10" />
+                  </initialValue>
+                  <documentation>
+                    <xhtml xmlns="http://www.w3.org/1999/xhtml"> Коэффициенты ПИД регулятора</xhtml>
+                  </documentation>
+                </variable>
+                <variable name="KI">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="0.1" />
+                  </initialValue>
+                </variable>
+                <variable name="KD">
+                  <type>
+                    <REAL />
+                  </type>
+                  <initialValue>
+                    <simpleValue value="0" />
+                  </initialValue>
+                </variable>
+              </globalVars>
+            </MixedAttrsVarList>
+          </data>
+        </addData>
+      </globalVars>
+    </data>
+  </addData>
+</project>

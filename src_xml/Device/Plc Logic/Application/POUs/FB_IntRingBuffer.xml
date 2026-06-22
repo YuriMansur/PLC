@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="static_torsion.project" modificationDateTime="2026-06-22T15:12:39.4699931">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">static_torsion</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="FB_IntRingBuffer" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="InVal">
+              <type>
+                <INT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Новое значение каждый цикл</xhtml>
+              </documentation>
+            </variable>
+            <variable name="Reset">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Сброс буфера</xhtml>
+              </documentation>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="Out">
+              <type>
+                <array>
+                  <dimension lower="0" upper="(Size - 1)" />
+                  <baseType>
+                    <INT />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="Out_WORDS">
+              <type>
+                <array>
+                  <dimension lower="0" upper="(Size - 1)" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="BUFFER_SIZE">
+              <type>
+                <UINT />
+              </type>
+              <initialValue>
+                <simpleValue value="Size" />
+              </initialValue>
+            </variable>
+            <variable name="head">
+              <type>
+                <UINT />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Индекс следующей записи в [0..Size-1]</xhtml>
+              </documentation>
+            </variable>
+          </outputVars>
+          <localVars constant="true">
+            <variable name="Size">
+              <type>
+                <UINT />
+              </type>
+              <initialValue>
+                <simpleValue value="50" />
+              </initialValue>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Размер буфера</xhtml>
+              </documentation>
+            </variable>
+          </localVars>
+          <localVars>
+            <variable name="store">
+              <type>
+                <array>
+                  <dimension lower="0" upper="(Size - 1)" />
+                  <baseType>
+                    <INT />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Внутреннее кольцо</xhtml>
+              </documentation>
+            </variable>
+            <variable name="filled">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Окно уже полностью заполнено</xhtml>
+              </documentation>
+            </variable>
+            <variable name="i">
+              <type>
+                <UINT />
+              </type>
+            </variable>
+            <variable name="oldestIdx">
+              <type>
+                <UINT />
+              </type>
+            </variable>
+            <variable name="idx">
+              <type>
+                <UINT />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">// Обработка сброса
+IF Reset THEN
+    // Очистка
+    FOR i := 0 TO Size - 1 DO
+        store[i] := 0;
+    END_FOR;
+    head := 0;
+    filled := FALSE;
+END_IF;
+
+// Запись нового значения в кольцо
+store[head] := InVal;
+head := head + 1;
+IF head &gt;= Size THEN
+    head := 0;
+    filled := TRUE; // как минимум один полный оборот сделан
+END_IF;
+
+// Формирование окна Out[1..SizeActual] от старого к новому
+IF filled THEN
+    oldestIdx := head; // после записи head указывает на "следующий"; он же — самый старый
+ELSE
+    oldestIdx := 0;    // пока не заполнены, начинаем с 0
+END_IF;
+
+FOR i := 0 TO Size - 1 DO
+    idx := oldestIdx + i;
+    IF idx &gt;= Size THEN
+        idx := idx - Size; // быстрый модуль
+    END_IF;
+    Out[i] := store[idx];
+	Out_WORDS[i] := TO_WORD(Out[i]);
+END_FOR;</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

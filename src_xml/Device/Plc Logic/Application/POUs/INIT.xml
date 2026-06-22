@@ -23,7 +23,29 @@
   </contentHeader>
   <types>
     <dataTypes />
-    <pous />
+    <pous>
+      <pou name="INIT" pouType="functionBlock">
+        <interface>
+          <localVars>
+            <variable name="xInit">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">IF NOT xInit THEN
+	GVL.xPowerEnable := TRUE;
+	GVL.DQ.PWR := TRUE;
+	xInit:= TRUE;
+END_IF</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
   </types>
   <instances>
     <configurations />

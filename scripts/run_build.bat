@@ -6,9 +6,9 @@ setlocal EnableDelayedExpansion
 set "CODESYS=C:\Program Files\CODESYS 3.5.17.30\CODESYS\Common\CODESYS.exe"
 set "PROFILE=CODESYS V3.5 SP17 Patch 3"
 rem Шаблон с настроенным "железом" (вариант A). Здесь — текущий проект как шаблон.
-set "TEMPLATE=project\V0.5\117_1_V0.5.project"
+set "TEMPLATE=project\static_torsion.project"
 set "SRCXML=src_xml"
-set "ARCHIVE=out\117_1_V0.5.projectarchive"
+set "ARCHIVE=out\static_torsion.projectarchive"
 
 cd /d "%~dp0.."
 

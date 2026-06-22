@@ -10,7 +10,7 @@ task-config), вливаем в него код из src_xml/ (PLCopen XML), к�
 Запуск:
   "<...>\\CODESYS.exe" --profile="CODESYS V3.5 SP17" --noUI ^
       --runscript="scripts\\build.py" ^
-      --scriptargs:"project\\V0.5\\117_1_V0.5.project src_xml out\\117_1_V0.5.projectarchive"
+      --scriptargs:"project\\static_torsion.project src_xml out\\static_torsion.projectarchive"
 
 ВАЖНО: исполняется только на машине с CODESYS SP17. [VERIFY] — места, где
 сигнатуры/методы зависят от версии и должны быть подтверждены первым прогоном.

@@ -11,7 +11,7 @@ export_xml.py — CODESYS ScriptEngine (IronPython 2.7).
 Запуск (из bat/хука):
   "<...>\\CODESYS.exe" --profile="CODESYS V3.5 SP17" --noUI ^
       --runscript="scripts\\export_xml.py" ^
-      --scriptargs:"project\\V0.5\\117_1_V0.5.project src_xml"
+      --scriptargs:"project\\static_torsion.project src_xml"
 
 ВАЖНО: точные сигнатуры export_xml/get_children сверены по докам, но запускать
 и проверять надо на машине с CODESYS SP17 (здесь исполнить нельзя). Места,

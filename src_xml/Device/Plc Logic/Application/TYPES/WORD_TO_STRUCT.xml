@@ -28,4 +28,36 @@
   <instances>
     <configurations />
   </instances>
+  <addData>
+    <data name="http://www.3s-software.com/plcopenxml/union" handleUnknown="implementation">
+      <union name="WORD_TO_STRUCT">
+        <variable name="_PDI">
+          <type>
+            <derived name="PDI" />
+          </type>
+        </variable>
+        <variable name="_PDQ">
+          <type>
+            <derived name="PDQ_OLD" />
+          </type>
+        </variable>
+        <variable name="_S_CTRL">
+          <type>
+            <derived name="S_CTRL" />
+          </type>
+        </variable>
+        <variable name="_S_STATE">
+          <type>
+            <derived name="S_STATE" />
+          </type>
+        </variable>
+        <variable name="_WORD">
+          <type>
+            <WORD />
+          </type>
+        </variable>
+        <addData />
+      </union>
+    </data>
+  </addData>
 </project>

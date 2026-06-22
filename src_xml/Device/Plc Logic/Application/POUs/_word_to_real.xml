@@ -23,7 +23,41 @@
   </contentHeader>
   <types>
     <dataTypes />
-    <pous />
+    <pous>
+      <pou name="_word_to_real" pouType="function">
+        <interface>
+          <returnType>
+            <REAL />
+          </returnType>
+          <inputVars>
+            <variable name="_word2">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+          </inputVars>
+          <localVars>
+            <variable name="_RW">
+              <type>
+                <derived name="REAL_WORD2" />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">_RW._WORDS := _word2;
+_word_to_real := _RW._REAL;</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
   </types>
   <instances>
     <configurations />

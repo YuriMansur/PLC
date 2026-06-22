@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="static_torsion.project" modificationDateTime="2026-06-22T15:12:39.4699931">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">static_torsion</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="ALARM" pouType="functionBlock">
+        <interface>
+          <inputVars>
+            <variable name="xAlarmReset">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+          </inputVars>
+          <outputVars>
+            <variable name="xReady">
+              <type>
+                <BOOL />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Готовность оборудования к работе: все цепи безопасности собраны	</xhtml>
+              </documentation>
+            </variable>
+            <variable name="xAlarm">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="AlarmID">
+              <type>
+                <INT />
+              </type>
+            </variable>
+          </outputVars>
+          <localVars>
+            <variable name="xTorqueAlarm">
+              <type>
+                <BOOL />
+              </type>
+            </variable>
+            <variable name="EmergencyStop">
+              <type>
+                <derived name="SR" />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">// Оборудование готово к работе
+xReady:= 	GVL.DI.CON_24V_ST AND						// цепи питание в норме
+			GVL.DI.SAFE_A_ST AND						// реле безопасности A в норме
+			GVL.DI.SAFE_B_ST AND						// реле безопасности B в норме
+			GVL.DI.CON_220V_ST AND						// цепи управления в норме
+			NOT (GVL.DI.LS_UP AND GVL.xLS_UP_EN) AND	// КВ ВЕРХ в норме или выключен флаг "КОНТРОЛИРОВАТЬ КВ ВЕРХ"
+			NOT (GVL.DI.LS_DN AND GVL.xLS_DN_EN) AND	// КВ НИЗ в норме или выключен флаг "КОНТРОЛИРОВАТЬ КВ НИЗ"
+			NOT (GVL.DI.LS_DOOR AND GVL.xLS_DOOR_EN);	// КВ ДВЕРЬ в норме или выключен флаг "КОНТРОЛИРОВАТЬ КВ ДВЕРЬ"
+
+IF ABS(GVL.rTorque) &gt; 55.0 THEN
+	xTorqueAlarm := TRUE;
+ELSE
+	xTorqueAlarm := FALSE;
+END_IF
+
+IF GVL.DEBUG THEN
+	xAlarm := FALSE;
+ELSE
+	EmergencyStop(SET1:= ((NOT xReady) OR xTorqueAlarm), RESET:= xAlarmReset, Q1=&gt; xAlarm);	
+END_IF</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

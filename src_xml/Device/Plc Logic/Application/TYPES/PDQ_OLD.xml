@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="static_torsion.project" modificationDateTime="2026-06-22T15:12:39.4699931">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">static_torsion</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes>
+      <dataType name="PDQ_OLD">
+        <baseType>
+          <struct>
+            <variable name="COL_24V">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 0 Питание светосигнальной колонны</xhtml>
+              </documentation>
+            </variable>
+            <variable name="COL_RD">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 1 Светосигнальная колонна - красный</xhtml>
+              </documentation>
+            </variable>
+            <variable name="COL_GN">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 2 Светосигнальная колонна - зелёный</xhtml>
+              </documentation>
+            </variable>
+            <variable name="COL_SN">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 3 Светосигнальная колонна - зуммер</xhtml>
+              </documentation>
+            </variable>
+            <variable name="PWR">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 4 Силовое питание - линейный силовозбудитель</xhtml>
+              </documentation>
+            </variable>
+            <variable name="LS_BYP">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 5 Ключ для снятия с концевиков</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT6">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 6</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT7">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 7</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT8">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 8</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT9">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 9</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT10">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 10</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT11">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 11</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT12">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 12</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT13">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 13</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT14">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 14</xhtml>
+              </documentation>
+            </variable>
+            <variable name="OUT15">
+              <type>
+                <derived name="BIT" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> 15</xhtml>
+              </documentation>
+            </variable>
+          </struct>
+        </baseType>
+        <addData />
+      </dataType>
+    </dataTypes>
+    <pous />
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

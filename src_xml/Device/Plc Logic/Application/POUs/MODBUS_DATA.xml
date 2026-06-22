@@ -1,0 +1,428 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://www.plcopen.org/xml/tc6_0200">
+  <fileHeader companyName="" productName="CODESYS" productVersion="CODESYS V3.5 SP17 Patch 3" creationDateTime="1970-01-01T00:00:00" />
+  <contentHeader name="static_torsion.project" modificationDateTime="2026-06-22T15:12:39.4699931">
+    <coordinateInfo>
+      <fbd>
+        <scaling x="1" y="1" />
+      </fbd>
+      <ld>
+        <scaling x="1" y="1" />
+      </ld>
+      <sfc>
+        <scaling x="1" y="1" />
+      </sfc>
+    </coordinateInfo>
+    <addData>
+      <data name="http://www.3s-software.com/plcopenxml/projectinformation" handleUnknown="implementation">
+        <ProjectInformation>
+          <property name="Project" type="string">static_torsion</property>
+        </ProjectInformation>
+      </data>
+    </addData>
+  </contentHeader>
+  <types>
+    <dataTypes />
+    <pous>
+      <pou name="MODBUS_DATA" pouType="program">
+        <interface>
+          <localVars>
+            <variable name="_T">
+              <type>
+                <derived name="WORD_TO_STRUCT" />
+              </type>
+            </variable>
+            <variable name="_RW">
+              <type>
+                <derived name="REAL_WORD2" />
+              </type>
+            </variable>
+            <variable name="ibuff">
+              <type>
+                <derived name="FB_IntRingBuffer" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Кольцевой буфер размером 50 значений для текущих хранения данных от датчика момента </xhtml>
+              </documentation>
+            </variable>
+            <variable name="xWriteRetain">
+              <type>
+                <derived name="R_TRIG" />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Флаг разрешения записи в энергонезависиимую память</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_DI" address="%MW40000">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Входы дискретные модуль A11 (ECAT-2053)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_TN" address="%MW40001">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Значение момента с АЦП модуля тензодатчика A14 (ECAT-2016N)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_EN" address="%MW40002">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Угол: измеренное абсолютное значение в условных единицах датчика </xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_DQ" address="%MW40004">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Выходы дискретные модуль A13 (ECAT-2057) (текущее состояние)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_STATE" address="%MW40005">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Текущий статус системы управления стендом</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_TN_OFFSET" address="%MW40006">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Смещение показаний АЦП для коррекции, заданное в ПЛК</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_EN_OFFSET" address="%MW40007">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Смещение показаний датчика угла, заданное в ПЛК</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_RD_AUX1" address="%MW40009">
+              <type>
+                <WORD />
+              </type>
+            </variable>
+            <variable name="MB_BUF_TN" address="%MW40010">
+              <type>
+                <array>
+                  <dimension lower="0" upper="(BUFFER_SIZE - 1)" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="MB_HEAD" address="%MW40060">
+              <type>
+                <WORD />
+              </type>
+            </variable>
+            <variable name="MB_RESERVE" address="%MW40061">
+              <type>
+                <array>
+                  <dimension lower="0" upper="(BUFFER_SIZE - 1)" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="MB_CTRL" address="%MW40111">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команда управления режимами работы стенда (основное управление с АРМ)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_TORQUE_SV" address="%MW40112">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Задание момента (в масштабированном INT: 25000 = 50 Нм)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_VELOCITY_SV" address="%MW40113">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Задание скорости сервопривода (масштабированный INT)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_DQ_CTRL" address="%MW40114">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команда прямого управления дискретными выходами модуль A13 (ECAT-2057)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_UZ_CTRL" address="%MW40115">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Команды прямого управления сервоприводом UZ41</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_KP" address="%MW40116">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Коэффициенты ПИД регулятора момента: Кп, Ки и Кд соответственно</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_KI" address="%MW40118">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="MB_KD" address="%MW40120">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> </xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_TQ_MAX" address="%MW40122">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Аварийная уставка по моменту в Нм (перегорузка при которой привод отключается)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_TQ_RANGE" address="%MW40123">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Диапазон датчика момента в Нм (UINT)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_ANGLE_SV" address="%MW40124">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Задание угла в градусах</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_MODEL" address="%MW40125">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Номер модели линеаризации характеристики датчика момента (0 = Линейная модель Y = A * x + B, остальные см. в комментариях)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_ANGLE_L" address="%MW40126">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Угол (абсолютный в градусах) ограничения против часовой (крайнее левое положение)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_ANGLE_R" address="%MW40127">
+              <type>
+                <WORD />
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> Угол (абсолютный в градусах) ограничения по часовой (крайнее правое положение)</xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_A1" address="%MW40128">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+              <documentation>
+                <xhtml xmlns="http://www.w3.org/1999/xhtml"> </xhtml>
+              </documentation>
+            </variable>
+            <variable name="MB_B1" address="%MW40130">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="MB_C1" address="%MW40132">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="MB_A2" address="%MW40134">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+            <variable name="MB_B2" address="%MW40136">
+              <type>
+                <array>
+                  <dimension lower="0" upper="1" />
+                  <baseType>
+                    <WORD />
+                  </baseType>
+                </array>
+              </type>
+            </variable>
+          </localVars>
+          <localVars constant="true">
+            <variable name="BUFFER_SIZE">
+              <type>
+                <UINT />
+              </type>
+              <initialValue>
+                <simpleValue value="50" />
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">// gen_sin_(PT:=T#1S, AM:=50, OS:= 0, DL:=0);
+// Буфер для хранения данных датчика момента
+ibuff();
+// Обрабатываем данные датчика момента
+GVL.rTorque := GetCompensatedTorque(GVL.iTorque_RAW, GVL.iTorque_ADC_offset); // Вычисляем значение датчика момента с учетом начального смещения
+GVL.rTorqueCalibrated := GetCalibratedTorque(GVL.rTorque);			// Вычисляем скорректированное значение датчика момента
+GVL.iTorqueScaled := CalculateScaledTorque(GVL.rTorqueCalibrated);	// Масштабированное значение для записи в буфер обмена
+ibuff.InVal := GVL.iTorqueScaled;									// Добавляем очередное значение в буфер
+
+// ---------- Запись и обработка данных регистров ModbusTCP -------------------
+//=============================================================================
+// ПЛК -&gt; ПО АРМ
+//=============================================================================
+MB_DI		 := GVL.DI.WDI;					// Дискретные входы
+//-----------------------------------------------------------------------------
+MB_TN 		 := TO_WORD(GVL.iTorque_RAW); 	// Данные с АЦП тензодатчика
+//-----------------------------------------------------------------------------
+MB_EN	 	 := _dint_to_word2(GVL.udiEncoder_RAW); // Энкодер угла
+//-----------------------------------------------------------------------------
+MB_DQ	 	 := GVL.DQ.WDQ;					// Состояние дискретных выходов
+//-----------------------------------------------------------------------------
+_T._S_STATE := GVL.State;
+MB_STATE    := _T._WORD;		// Статус системы управления
+//-----------------------------------------------------------------------------
+MB_TN_OFFSET := TO_WORD(GVL.iTorque_ADC_offset); // Смещение 0 АЦП тензодатчика
+//-----------------------------------------------------------------------------
+MB_EN_OFFSET := _dint_to_word2(GVL.udiEncoderOffset); // Смещение 0 энкодера угла
+//-----------------------------------------------------------------------------
+MB_BUF_TN 	 := ibuff.Out_WORDS; // Копируем текущие данные буфера датчика в буфер MODBUS
+//-----------------------------------------------------------------------------
+MB_HEAD 	 := ibuff.head;	 	 // Счетчик позициии указателя на начало текущего буфера
+
+//=============================================================================
+// Запись ПО АРМ -&gt; ПЛК
+//=============================================================================
+IF GVL.fbAlarm.xAlarm THEN
+	_T._WORD := MB_CTRL AND 16#FFFE;		// Общая авария, аварийный останов		
+ELSE
+	_T._WORD := MB_CTRL;		 
+END_IF
+GVL.Control		:= _T._S_CTRL;	 // Команда управления
+//-----------------------------------------------------------------------------
+GVL.iTorqueSV	:= TO_INT(MB_TORQUE_SV);		// Задание момента в Нм * 500
+//-----------------------------------------------------------------------------
+GVL.iJogVelocity := TO_INT(MB_VELOCITY_SV);		// Скорость привода в JOG режиме
+												// в град/сек * 1000
+//-----------------------------------------------------------------------------
+_T._WORD 		:= MB_DQ_CTRL;	 // Прямое управление выходами ПЛК с ПО АРМ
+GVL.DQ_Control	:= _T._PDQ;		 // (только в сервисном режиме)
+//-----------------------------------------------------------------------------
+GVL.UZ_Control 	:=  MB_UZ_CTRL;	// Прямое управление UZ (только в сервисном режиме)
+
+//-----------------------------------------------------------------------------
+xWriteRetain(CLK:= GVL.Control.WriteRetain);
+
+IF xWriteRetain.Q THEN
+	// Коэффициенты ПИД регулятора
+	GVL.KP := _word_to_real(MB_KP);
+	GVL.KI := _word_to_real(MB_KI);
+	GVL.KD := _word_to_real(MB_KD);
+	// Коэффициенты аппроксимации датчика момента
+	GVL.rA1 := _word_to_real(MB_A1);
+	GVL.rB1 := _word_to_real(MB_B1);
+	GVL.rC1 := _word_to_real(MB_C1);
+	GVL.rA2 := _word_to_real(MB_A2);
+	GVL.rB2 := _word_to_real(MB_B2);
+	// Диапазон датчика момента
+	GVL.iTorqueSensorRange := 50; //TO_UINT(MB_TQ_RANGE);
+END_IF
+
+
+
+
+
+
+</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
+  </types>
+  <instances>
+    <configurations />
+  </instances>
+</project>

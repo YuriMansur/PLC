@@ -23,7 +23,38 @@
   </contentHeader>
   <types>
     <dataTypes />
-    <pous />
+    <pous>
+      <pou name="CalculateScaledTorque" pouType="function">
+        <interface>
+          <returnType>
+            <INT />
+          </returnType>
+          <inputVars>
+            <variable name="torque">
+              <type>
+                <REAL />
+              </type>
+            </variable>
+          </inputVars>
+          <localVars constant="true">
+            <variable name="scale_">
+              <type>
+                <REAL />
+              </type>
+              <initialValue>
+                <simpleValue value="500" />
+              </initialValue>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">CalculateScaledTorque:= LIMIT(-32768, TO_INT(torque * scale_), 32767);</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
   </types>
   <instances>
     <configurations />

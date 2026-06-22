@@ -23,7 +23,41 @@
   </contentHeader>
   <types>
     <dataTypes />
-    <pous />
+    <pous>
+      <pou name="GetCommand" pouType="function">
+        <interface>
+          <returnType>
+            <WORD />
+          </returnType>
+          <inputVars>
+            <variable name="control_word">
+              <type>
+                <derived name="S_CTRL" />
+              </type>
+            </variable>
+          </inputVars>
+          <localVars>
+            <variable name="out">
+              <type>
+                <WORD />
+              </type>
+            </variable>
+          </localVars>
+        </interface>
+        <body>
+          <ST>
+            <xhtml xmlns="http://www.w3.org/1999/xhtml">out.0 := control_word.cmd_bit0;
+out.1 := control_word.cmd_bit1;
+out.2 := control_word.cmd_bit2;
+
+GetCommand := out;
+
+</xhtml>
+          </ST>
+        </body>
+        <addData />
+      </pou>
+    </pous>
   </types>
   <instances>
     <configurations />
